@@ -174,9 +174,46 @@ function updateCartUI() {
     }
 }
 
+function buyItems() {
+    // Check if the cart is empty
+    if (cart.length === 0) {
+        alert('Cart is empty. Please add items to proceed.');
+        return;
+    }
+
+    // Redirect to payments.html to initiate the payment process
+    window.location.href = "payments.html";
+}
+
 // Function to show the cart page
 function showCartPage() {
     window.location.href = "cart.html";
+}
+
+// Function to show the payments page
+function showPaymentsPage() {
+    window.location.href = "payments.html";
+}
+
+// Function to pay with wallet
+function payWithWallet() {
+    // Implement logic to connect to the user's wallet and initiate the payment process
+    // For example, using MetaMask or other Ethereum wallet providers
+    alert('Payment with Wallet initiated.');
+    clearCart();
+}
+
+// Function to pay on delivery
+function payOnDelivery() {
+    // Implement logic for pay on delivery option
+    alert('Payment on Delivery selected.');
+    clearCart();
+}
+
+// Function to clear the cart
+function clearCart() {
+    cart.length = 0;
+    updateCartUI();
 }
 
 // Function to toggle between light and dark mode (placeholder for now)
