@@ -47,8 +47,71 @@ async function showOutletPage(restaurantId) {
     const container = document.createElement('div');
     container.className = 'container';
     container.appendChild(outletList);
+
+    // Add a back button to navigate back to the home page
+    const backButton = document.createElement('button');
+    backButton.innerText = 'Back';
+    backButton.onclick = showHomePage;
+    container.insertBefore(backButton, outletList);
+
     document.body.innerHTML = '';
     document.body.appendChild(container);
+
+    // Navigate to the food-items.html page when an outlet is clicked
+    const outletCards = document.getElementsByClassName('outlet-card');
+    for (let i = 0; i < outletCards.length; i++) {
+        const outletCard = outletCards[i];
+        outletCard.onclick = () => {
+            showFoodItemsPage(outlets[i]);
+        };
+    }
+}
+
+// Function to show the food items page of a specific outlet
+async function showFoodItemsPage(outlet) {
+    const foodItemsList = document.createElement('div');
+    foodItemsList.className = 'food-item-list';
+
+    for (let i = 0; i < outlet.foodItems.length; i++) {
+        const foodItem = outlet.foodItems[i];
+        const itemPrice = web3.utils.fromWei(foodItem.price, 'ether');
+        const listItem = document.createElement('div');
+        listItem.className = 'food-item';
+        listItem.innerHTML = `
+            <span class="food-item-name">${foodItem.name}</span>
+            <span class="food-item-price">Price: ${itemPrice} ETH</span>
+            <button class="add-button" onclick="addToCart('${foodItem.name}', ${foodItem.price})">Add to Cart</button>
+        `;
+        foodItemsList.appendChild(listItem);
+    }
+
+    const container = document.createElement('div');
+    container.className = 'container';
+    container.appendChild(foodItemsList);
+
+    // Add a back button to navigate back to the outlet page
+    const backButton = document.createElement('button');
+    backButton.innerText = 'Back';
+    backButton.onclick = () => {
+        showOutletPage(outlet.restaurant_id);
+    };
+    container.insertBefore(backButton, foodItemsList);
+
+    document.body.innerHTML = '';
+    document.body.appendChild(container);
+
+    // Display the cart icon
+    const cartIcon = document.createElement('div');
+    cartIcon.className = 'cart-icon';
+    cartIcon.innerHTML = `
+        <button class="cart-button" onclick="showCartPage()">Cart</button>
+    `;
+    container.appendChild(cartIcon);
+}
+
+// Function to show the home page
+function showHomePage() {
+    location.reload(); // Reload the page to show the home page again
 }
 
 // Function to create an outlet card
@@ -106,17 +169,14 @@ function updateCartUI() {
         const buyButton = document.createElement('button');
         buyButton.className = 'buy-button';
         buyButton.innerText = 'Buy';
-        buyButton.onclick = buyItems;
+        buyButton.onclick = showCartPage;
         cartContainer.appendChild(buyButton);
     }
 }
 
-// Function to buy the items in the cart (placeholder for now)
-function buyItems() {
-    // Implement the logic to initiate the payment process and clear the cart
-    alert('Payment process initiated. Cart cleared.');
-    cart.length = 0;
-    updateCartUI();
+// Function to show the cart page
+function showCartPage() {
+    window.location.href = "cart.html";
 }
 
 // Function to toggle between light and dark mode (placeholder for now)
