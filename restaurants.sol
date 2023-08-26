@@ -53,7 +53,7 @@ contract Restaurants {
     function getRestaurantCount() public view returns (uint) {
         return restaurants.length;
     }
-FoodItem[] public foodItems; // Array to store all food items
+    FoodItem[] public foodItems; // Array to store all food items
 
     // Add a food item to a specific outlet of a specific restaurant
     function addFoodItem(uint _restaurantIndex, uint _outletIndex, string memory _name, uint _price) public {
@@ -64,6 +64,17 @@ FoodItem[] public foodItems; // Array to store all food items
         outlets[outletId].foodItemIndices.push(foodItems.length); // Store the index of the new food item
         
         foodItems.push(FoodItem(_name, _price)); // Add the food item to the foodItems array
+    }
+    
+
+    function getFoodItemCount(uint outletIndex) public view returns(uint){
+        require(outletIndex < outlets.length, "Invalid outlet index");
+        return outlets[outletIndex].foodItemIndices.length;
+    }
+
+    function getFoodItems(uint outletIndex, uint itemIndex)public view returns(string memory, uint){
+        require(outletIndex < outlets.length, "Invalid outlet index");
+        return (foodItems[itemIndex].name, foodItems[itemIndex].price);
     }
 
     // Food Item
